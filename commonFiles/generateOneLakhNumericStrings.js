@@ -1,5 +1,5 @@
-export function generateOneLakhNumericStrings(length) {
-  const numberOfStrings = 100000;
+function generateOneLakhNumericStrings(length) {
+  const numberOfStrings = 10000;
   const strings = [];
 
   for (let i = 0; i < numberOfStrings; i++) {
@@ -15,3 +15,6 @@ export function generateOneLakhNumericStrings(length) {
 
   return strings;
 }
+module.exports = {
+  generateOneLakhNumericStrings,
+};

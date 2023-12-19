@@ -20,3 +20,7 @@ functions:
           path: /sailthru/{proxy+}
           method: post
           cors: true
+      - http:
+          path: /iterable/{proxy+}
+          method: post
+          cors: true
