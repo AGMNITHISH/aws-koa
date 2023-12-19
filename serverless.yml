@@ -1,0 +1,22 @@
+service: my-serverless-app
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+
+functions:
+  app:
+    handler: handler.handler
+    events:
+      - http:
+          path: /sailthru/{proxy+}
+          method: get
+          cors: true
+      - http:
+          path: /iterable/{proxy+}
+          method: get
+          cors: true
+      - http:
+          path: /sailthru/{proxy+}
+          method: post
+          cors: true
