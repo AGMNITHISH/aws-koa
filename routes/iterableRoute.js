@@ -2,6 +2,8 @@ const Router = require("koa-router");
 const {
   generateOneLakhNumericStrings,
 } = require("../commonFiles/generateOneLakhNumericStrings");
+const AWS = require("aws-sdk");
+const lambda = new AWS.Lambda();
 
 const router = new Router({ prefix: "/iterable" });
 
@@ -39,10 +41,15 @@ router.get("/maskedEmail", async (context) => {
 
 router.post("/lambda1", async (context) => {
   try {
-    const requestBody = context.request.body;
+    const params = {
+      FunctionName: "lambdaTwo",
+      InvocationType: "RequestResponse",
+      Payload: JSON.stringify(context.request.body),
+    };
     const contentLength = context.headers["content-length"];
 
-    context.body = formatBytes(contentLength);
+    const data = await lambda.invoke(params).promise();
+    context.body = { data: data.Payload, size: formatBytes(contentLength) };
   } catch (error) {
     context.status = 500;
     context.body = error.message || "internal server error";

@@ -2,25 +2,33 @@ service: my-serverless-app
 
 provider:
   name: aws
-  runtime: nodejs14.x
+  runtime: nodejs18.x
+  iam:
+    role:
+      statements: ${file(./iam.yml)}
+  # iam:
+  #   role:
+  #     statements:
+  #       - Effect: Allow
+  #         Action: lambda:InvokeFunction
+  #         Resource: arn:aws:lambda:us-east-1:324425813232:function:my-serverless-app-dev-lambdaTwo
 
 functions:
-  app:
-    handler: handler.handler
+  lambdaOne:
+    handler: lambdaOne.handler
     events:
       - http:
-          path: /sailthru/{proxy+}
-          method: get
-          cors: true
-      - http:
           path: /iterable/{proxy+}
           method: get
           cors: true
       - http:
-          path: /sailthru/{proxy+}
+          path: /iterable/{proxy+}
           method: post
           cors: true
+  lambdaTwo:
+    handler: lambdaTwo.handler
+    events:
       - http:
-          path: /iterable/{proxy+}
+          path: /lambdaTwo/{proxy+}
           method: post
           cors: true

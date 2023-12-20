@@ -1,22 +1,13 @@
 const Router = require("koa-router");
 
-const router = new Router({ prefix: "/sailthru" });
+const router = new Router({ prefix: "/lambdaTwo" });
 
-router.get("/email", async (context) => {
+router.post("/email", async (event, context) => {
   try {
-    context.body = "hii";
-  } catch (error) {
-    context.status = 500;
-    context.body = { error: error.message };
-  }
-});
-
-router.post("/email", async (context) => {
-  try {
-    const requestBody = context.request.body;
+    const requestBody = JSON.parse(event.body);
     context.body = requestBody;
   } catch (error) {
-    ontext.status = 500;
+    context.status = 500;
     context.body = { error: error.message };
   }
 });
