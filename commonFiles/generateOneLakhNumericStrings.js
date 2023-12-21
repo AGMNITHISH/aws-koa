@@ -1,5 +1,5 @@
 function generateOneLakhNumericStrings(length) {
-  const numberOfStrings = 10000;
+  const numberOfStrings = 100000;
   const strings = [];
 
   for (let i = 0; i < numberOfStrings; i++) {

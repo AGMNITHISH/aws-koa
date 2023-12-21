@@ -19,15 +19,7 @@ const dataObj = {
   projectId: 109006,
   campaignId: 29501997,
 };
-function formatBytes(bytes) {
-  if (bytes < 1024) {
-    return bytes + " bytes";
-  } else if (bytes < 1024 * 1024) {
-    return (bytes / 1024).toFixed(2) + " KB";
-  } else {
-    return (bytes / (1024 * 1024)).toFixed(2) + " MB";
-  }
-}
+
 router.get("/maskedEmail", async (context) => {
   try {
     const data = await generateOneLakhNumericStrings(16);
@@ -42,17 +34,32 @@ router.get("/maskedEmail", async (context) => {
 router.post("/lambda1", async (context) => {
   try {
     const params = {
-      FunctionName: "lambdaTwo",
+      FunctionName: "my-serverless-app-dev-lambdaTwo",
       InvocationType: "RequestResponse",
       Payload: JSON.stringify(context.request.body),
     };
+
     const contentLength = context.headers["content-length"];
 
-    const data = await lambda.invoke(params).promise();
-    context.body = { data: data.Payload, size: formatBytes(contentLength) };
+    const response = await lambda.invoke(params).promise();
+
+    console.log("after lambdaTwo invoked ", contentLength, response);
+
+    return {
+      statusCode: 200,
+      body: JSON.stringify({
+        message: "Data sent to second Lambda successfully",
+      }),
+    };
   } catch (error) {
-    context.status = 500;
-    context.body = error.message || "internal server error";
+    console.error("lambdaOne post api error", error);
+    return {
+      statusCode: 500,
+      body: JSON.stringify({
+        message: "Error sending data to second Lambda",
+        InputData: context.request.body,
+      }),
+    };
   }
 });
 

@@ -27,8 +27,3 @@ functions:
           cors: true
   lambdaTwo:
     handler: lambdaTwo.handler
-    events:
-      - http:
-          path: /lambdaTwo/{proxy+}
-          method: post
-          cors: true
