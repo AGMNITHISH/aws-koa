@@ -1,9 +1,9 @@
 const serverless = require("serverless-http");
-const server = require("./server");
+const server = require("../server");
 
 const handler = serverless(server);
 
-module.exports.handler = async (event, context) => {
+exports.handler = async (event, context) => {
   try {
     console.log("lambdaOne - post api input", event, context);
     return await handler(event, context);

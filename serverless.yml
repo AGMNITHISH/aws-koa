@@ -15,15 +15,15 @@ provider:
 
 functions:
   lambdaOne:
-    handler: lambdaOne.handler
+    handler: lambda/lambdaOne.handler
     events:
       - http:
-          path: /iterable/{proxy+}
-          method: get
+          path: lambda1
+          method: GET
           cors: true
       - http:
-          path: /iterable/{proxy+}
-          method: post
+          path: /lambda1
+          method: POST
           cors: true
   lambdaTwo:
-    handler: lambdaTwo.handler
+    handler: lambda/lambdaTwo.handler
