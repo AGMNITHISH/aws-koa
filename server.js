@@ -5,6 +5,8 @@ const AWS = require("aws-sdk");
 const {
   generateOneLakhNumericStrings,
 } = require("./commonFiles/generateOneLakhNumericStrings");
+const { getPayloadWeight } = require("./commonFiles/commonFunctions");
+const jsonData = require("./data.json");
 
 const lambda = new AWS.Lambda();
 const app = new Koa();
@@ -28,21 +30,26 @@ app.use(bodyParser());
 // POST route
 router.post("/lambda1", async (ctx) => {
   try {
+    console.log(
+      "lambda1 received payload bytes",
+      getPayloadWeight(ctx.request.body)
+    );
+    console.log("static file data length", getPayloadWeight(jsonData));
     const params = {
       FunctionName: "my-serverless-app-dev-lambdaTwo",
       InvocationType: "RequestResponse",
-      Payload: JSON.stringify(ctx.request.body),
+      Payload: JSON.stringify(jsonData),
     };
     const contentLength = ctx.headers["content-length"];
 
     const response = await lambda.invoke(params).promise();
 
-    console.log("after lambdaTwo invoked ", contentLength, response);
+    console.log("after lambdaTwo invoked ", response);
     ctx.status = 200;
     ctx.body = { message: "POST request processed successfully" };
   } catch (error) {
     ctx.status = 500;
-    ctx.body = { error: error.message };
+    ctx.body = { api_gateway_error: error.message };
   }
 });
 

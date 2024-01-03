@@ -7,6 +7,12 @@ function formatBytes(bytes) {
     return (bytes / (1024 * 1024)).toFixed(2) + " MB";
   }
 }
+function getPayloadWeight(payload) {
+  const payloadString = JSON.stringify(payload);
+  const payloadSizeInBytes = new Blob([payloadString]).size;
+  return payloadSizeInBytes;
+}
 module.exports = {
   formatBytes,
+  getPayloadWeight,
 };
